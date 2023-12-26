@@ -1,37 +1,45 @@
 #include <iostream>
+#include <cctype>  // For isdigit and isalpha
 #include <string>
-#include <cctype> 
-
+#include <vector>
 using namespace std;
 
+bool isPasswordValid(const string& password) {
+    // Vector to store error messages
+    vector<string> errorMessages;
 
-bool checkLength(string text) {
-    if (text.length() >= 6 && text.length() <= 10) {
-        return true;
-    }
-    return false;
-}
-
-bool isAlphaOrDigit(const string& str) {
-    for (char ch : str) {
-        // Check if the character is not a digit and not an alphabetic character
-        if (!isdigit(ch) && !isalpha(ch)) {
-            return false;
+    // Check rule: It should contain only letters and digits
+    for (char ch : password) {
+        if (!isalnum(ch)) {
+            errorMessages.push_back("Password must consist only of letters and digits.");
+            // No return here to continue checking other conditions
         }
     }
+
+    // ... (other rules, each with a push_back if condition is not met)
+
+    // Print error messages and return validity
+    if (!errorMessages.empty()) {
+        for (const string& message : errorMessages) {
+            cout << message << endl;
+        }
+        return false;
+    }
+
+    // If no errors, return true
     return true;
 }
 
-void printResult(string str) {
-    cout << findTheVowels(str) << endl;
-}
-
 int main() {
-    string input;
+    string password;
+    cout << "Enter a password: ";
+    cin >> password;
 
-    cin >> input;
-
-    printResult(input);
+    if (isPasswordValid(password)) {
+        cout << "Password is valid." << endl;
+    } else {
+        cout << "Password is not valid." << endl;
+    }
 
     return 0;
 }
